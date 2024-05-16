@@ -68,10 +68,14 @@ def convert_folder(mri_folder, png_folder):
     """
 
     # Create the folder for the pnd directory structure
-    os.makedirs(png_folder)
+    os.makedirs(png_folder, exist_ok=True)
 
     # Recursively traverse all sub-folders in the path
+    print(mri_folder)
+    print(list(os.walk(mri_folder)))
     for mri_sub_folder, subdirs, files in os.walk(mri_folder):
+        print(mri_sub_folder)
+
         for mri_file in os.listdir(mri_sub_folder):
             mri_file_path = os.path.join(mri_sub_folder, mri_file)
 
@@ -88,9 +92,9 @@ def convert_folder(mri_folder, png_folder):
                 try:
                     # Convert the actual file
                     convert_file(mri_file_path, png_file_path)
-                    print 'SUCCESS>', mri_file_path, '-->', png_file_path
+                    print('SUCCESS>', mri_file_path, '-->', png_file_path)
                 except Exception as e:
-                    print 'FAIL>', mri_file_path, '-->', png_file_path, ':', e
+                    print('FAIL>', mri_file_path, '-->', png_file_path, ':', e)
 
 
 if __name__ == '__main__':
@@ -100,7 +104,7 @@ if __name__ == '__main__':
     parser.add_argument('png_path', help='Full path to the generated png file')
 
     args = parser.parse_args()
-    print args
+    print(args)
     if args.f:
         convert_folder(args.dicom_path, args.png_path)
     else:
